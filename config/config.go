@@ -20,3 +20,11 @@ func GetHubSpotBaseURL() string {
 	}
 	return baseUrl
 }
+
+func GetMongoURI() string {
+	mongoURI := os.Getenv("MONGO_URI")
+	if mongoURI == "" {
+		log.Fatal("MONGO_URI is not set in environment variables")
+	}
+	return mongoURI
+}
