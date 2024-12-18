@@ -43,7 +43,7 @@ func GetContact(client *mongo.Client, dbName, collectionName, email string) (*mo
 }
 
 // GetAllContacts retrieves all contacts from MongoDB.
-func GetAllContacts(client *mongo.Client, dbName, collectionName string) ([]models.Contact, error) {
+func GetAllContacts(client *mongo.Client, dbName, collectionName string) ([]bson.M, error) {
 	collection := client.Database(dbName).Collection(collectionName)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -55,20 +55,8 @@ func GetAllContacts(client *mongo.Client, dbName, collectionName string) ([]mode
 	}
 	defer cursor.Close(ctx)
 
-	// Slice to store all contacts
-	var contacts []models.Contact
-
-	// Iterate through the cursor and decode each document
-	for cursor.Next(ctx) {
-		var contact models.Contact
-		if err := cursor.Decode(&contact); err != nil {
-			return nil, err
-		}
-		contacts = append(contacts, contact)
-	}
-
-	// Check for cursor errors
-	if err := cursor.Err(); err != nil {
+	var contacts []bson.M
+	if err = cursor.All(ctx, &contacts); err != nil {
 		return nil, err
 	}
 
