@@ -50,28 +50,48 @@ func SyncToHubsport() {
 				"email":     email,
 			},
 		}
-		body, err := json.Marshal(hscontact)
-		contactId := contact["hs_contact_id"].(string)
-		if err != nil {
-			log.Fatalf("Error serializing contact properties: %v", err)
-		}
-		response, err := ct.UpdateContactWithBodyWithResponse(context.Background(), contactId, contentType, bytes.NewReader(body))
-		if err != nil {
-			log.Fatalf("Error to update contact %s", contactId)
-		}
+		log.Printf("Contact First Name: %v\n", firstName)
+		body, _ := json.Marshal(hscontact)
 
-		if response.StatusCode() == 200 {
-			if response.JSON200 == nil || response.JSON200.Id == nil {
-				log.Fatalf("Response contains no results")
+		contactId, ok := contact["hs_contact_id"].(string)
+		if !ok || contactId == "" {
+			// Create a new contact in HubSpot
+			response, err := ct.CreateContactWithBodyWithResponse(context.Background(), contentType, bytes.NewReader(body))
+			if err != nil {
+				log.Printf("Error creating contact in HubSpot: %v", err)
+				continue
 			}
+			if response.StatusCode() == 201 && response.JSON201 != nil {
+				newContactID := *response.JSON201.Id
+				log.Printf("Created new contact with ID: %s", newContactID)
 
-			if response.JSON200.Properties != nil {
-				log.Fatalf("Properties: %s", response.JSON200.Properties)
+				// Update MongoDB with the new hs_contact_id
+				updateErr := database.UpdateContactHsID(mongoClient, dbName, collectionName, contact["_id"], newContactID)
+				if updateErr != nil {
+					log.Printf("Error updating MongoDB with hs_contact_id: %v", updateErr)
+				}
 			} else {
-				log.Fatalf("No properties found.")
+				log.Printf("Failed to create contact: %v", response)
 			}
 		} else {
-			log.Printf("Test Failed with status code %d: %v", response.StatusCode(), response)
+			response, err := ct.UpdateContactWithBodyWithResponse(context.Background(), contactId, contentType, bytes.NewReader(body))
+			if err != nil {
+				log.Printf("Error to update contact %s", contactId)
+			}
+
+			if response.StatusCode() == 200 {
+				if response.JSON200 == nil || response.JSON200.Id == nil {
+					log.Printf("Response contains no results")
+				}
+
+				if response.JSON200.Properties != nil {
+					log.Printf("Properties: %s", response.JSON200.Properties)
+				} else {
+					log.Printf("No properties found.")
+				}
+			} else {
+				log.Printf("Test Failed with status code %d: %v", response.StatusCode(), response)
+			}
 		}
 	}
 }
