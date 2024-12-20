@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.4
 
 require (
-	github.com/entanglesoftware/hubspot-api-go v0.0.0-20241218095133-244639ac33a3
+	github.com/entanglesoftware/hubspot-api-go v0.0.0-20241220075433-35e3816ad03e
 	go.mongodb.org/mongo-driver v1.17.1
 )
 

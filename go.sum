@@ -9,6 +9,8 @@ github.com/entanglesoftware/hubspot-api-go v0.0.0-20241216135826-5702cea8781e h1
 github.com/entanglesoftware/hubspot-api-go v0.0.0-20241216135826-5702cea8781e/go.mod h1:BRl3YoebcPHRR58ZWT88hGIWfljiewaW1gvhoeznXRk=
 github.com/entanglesoftware/hubspot-api-go v0.0.0-20241218095133-244639ac33a3 h1:Bie1kUJ5uB1SUkOiU23BKs02aoP4j1q+kjOFcJdGJyI=
 github.com/entanglesoftware/hubspot-api-go v0.0.0-20241218095133-244639ac33a3/go.mod h1:BRl3YoebcPHRR58ZWT88hGIWfljiewaW1gvhoeznXRk=
+github.com/entanglesoftware/hubspot-api-go v0.0.0-20241220075433-35e3816ad03e h1:ZIPJdO3UX0qTXPlu0HDrXPm2Rug7FxrpsDcWqsys/EE=
+github.com/entanglesoftware/hubspot-api-go v0.0.0-20241220075433-35e3816ad03e/go.mod h1:BRl3YoebcPHRR58ZWT88hGIWfljiewaW1gvhoeznXRk=
 github.com/getkin/kin-openapi v0.128.0 h1:jqq3D9vC9pPq1dGcOCv7yOp1DaEe7c/T1vzcLbITSp4=
 github.com/getkin/kin-openapi v0.128.0/go.mod h1:OZrfXzUfGrNbsKj+xmFBx6E5c6yH3At/tAKSc2UszXM=
 github.com/go-openapi/jsonpointer v0.21.0 h1:YgdVicSA9vH5RiHs9TZW5oyafXZFc6+2Vc1rr/O9oNQ=
